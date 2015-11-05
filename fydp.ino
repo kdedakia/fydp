@@ -1,19 +1,51 @@
 /*
- * rosserial Subscriber Example
- * Blinks an LED on callback
+ * FYDP Arduino-ROS Bridge
+ * Actuates motor depending on ROS commands
  */
 
 #include <ros.h>
 #include <std_msgs/String.h>
 
+// INITIALIZE VARIABLES
 ros::NodeHandle nh;
-bool leftOn = false;
-bool rightOn = false;
-int left = 9;
-int right = 10;
 std_msgs::String debug_msg;
 ros::Publisher debug("debug", &debug_msg);
 
+bool leftOn = false;
+bool rightOn = false;
+
+int left = 9;
+int right = 10;
+
+// Log movements
+void logmove(direction,on) {
+  if(direction == left) {
+    debug_msg.data = "LEFT";
+  }
+  if (direction == right) {
+    debug_msg.data = "RIGHT";
+  }
+
+  if (on) {
+    debug_msg.data += " | ON ";
+  } else {
+    debug_msg.data += " | OFF"
+  }
+}
+
+// Activate motor depending on direction
+void move(dir,speed) {
+  bool on = digitalRead(dir);
+  logmove(dir,on);
+
+  if (on) {
+    digitalWrite(dir, LOW);
+  } else {
+    digitalWrite(dir, HIGH);
+  }
+}
+
+// Callback function that is executed when a command is published
 void messageCb( const std_msgs::String& toggle_msg){
   String command = toggle_msg.data;
 
@@ -57,12 +89,10 @@ void messageCb( const std_msgs::String& toggle_msg){
 
 }
 
-ros::Subscriber<std_msgs::String> sub("toggle_led", &messageCb );
-
+ros::Subscriber<std_msgs::String> sub("command", &messageCb );
 
 void setup()
 {
-  Serial.begin(57600);
   pinMode(left, OUTPUT);
   pinMode(right, OUTPUT);
   nh.initNode();
@@ -73,5 +103,5 @@ void setup()
 void loop()
 {
   nh.spinOnce();
-  delay(500);
+  delay(1);
 }
