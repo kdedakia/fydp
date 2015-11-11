@@ -5,6 +5,9 @@
 
 #include <ros.h>
 #include <std_msgs/String.h>
+#include <geometry_msgs/Twist.h>
+#include <stdlib.h>
+
 
 // INITIALIZE VARIABLES
 ros::NodeHandle nh;
@@ -17,26 +20,43 @@ bool rightOn = false;
 int left = 9;
 int right = 10;
 
+// Debug message
+void d(String s) {
+    char s_arr[100];
+    s.toCharArray(s_arr,100);
+    debug_msg.data = s_arr;
+    debug.publish( &debug_msg);
+}
+
 // Log movements
-void logmove(direction,on) {
-  if(direction == left) {
-    debug_msg.data = "LEFT";
+void logmove(int dir, bool on) {
+  String d_str = "CURRENTLY: ";
+
+  if(dir == left) {
+    d_str += "LEFT";
   }
-  if (direction == right) {
-    debug_msg.data = "RIGHT";
+  if (dir == right) {
+    d_str += "RIGHT";
   }
 
   if (on) {
-    debug_msg.data += " | ON ";
+    d_str += " | ON ";
   } else {
-    debug_msg.data += " | OFF"
+    d_str += " | OFF ";
   }
+
+  char d_arr[100];
+  d_str.toCharArray(d_arr,100);
+  debug_msg.data = d_arr;
+  debug.publish( &debug_msg);
 }
 
 // Activate motor depending on direction
-void move(dir,speed) {
+void motor(int dir,int speed) {
+  // debug_msg.data = "IN MOTOR";
+  // debug.publish( &debug_msg);
   bool on = digitalRead(dir);
-  logmove(dir,on);
+  // logmove(dir,on);
 
   if (on) {
     digitalWrite(dir, LOW);
@@ -45,56 +65,59 @@ void move(dir,speed) {
   }
 }
 
+void motor_test(int dir,int speed){
+  analogWrite(left,speed);
+}
+
+void move(float x,float r) {
+  if (x > 0) {
+    int speed = 255;
+    // motor(left,speed);
+    // motor(right,speed);
+    motor_test(left,speed);
+    d("MOVE FORWARD");
+  }
+  else {
+    motor_test(left,0);
+  }
+
+  if (r > 0) {
+    int speed = 100;
+    // motor(right,speed);
+    d("TURN LEFT");
+  }
+}
+
 // Callback function that is executed when a command is published
 void messageCb( const std_msgs::String& toggle_msg){
   String command = toggle_msg.data;
 
-  //Check if motors are currently on
-  leftOn = digitalRead(left);
-  rightOn = digitalRead(right);
-
-  //Log if motors are on
-  if (leftOn) {
-    debug_msg.data = "LEFT ON";
-    debug.publish( &debug_msg);
-  }
-  if (rightOn) {
-    debug_msg.data = "RIGHT ON";
-    debug.publish( &debug_msg);
-  }
-
-  if(command == "left") {
-    if(leftOn) {
-      digitalWrite(left, LOW);
-      debug_msg.data = "STOP LEFT";
-      debug.publish( &debug_msg);
-    } else {
-      digitalWrite(left, HIGH);
-      debug_msg.data = "START LEFT";
-      debug.publish( &debug_msg);
-    }
-  }
-
-  else if(command =="right") {
-    if (rightOn) {
-      digitalWrite(right, 0);
-      debug_msg.data = "STOP RIGHT";
-      debug.publish( &debug_msg);
-    } else {
-      digitalWrite(right, 100);
-      debug_msg.data = "START RIGHT";
-      debug.publish( &debug_msg);
-    }
-  }
-
 }
 
-ros::Subscriber<std_msgs::String> sub("command", &messageCb );
+void teleop( const geometry_msgs::Twist& tele_msg) {
+  float x = tele_msg.linear.x;
+  float r = tele_msg.angular.z; //Rotation
+  String log;
+  char x_string[10];
+  char r_string[10];
+  dtostrf(x,7,3,x_string);
+  dtostrf(r,7,3,r_string);
+  // d("X VELOCITY");
+  // d(x_string);
+  // d("ROTATION");
+  // d(r_string);
+
+  move(x,r);
+}
+
+// ros::Subscriber<std_msgs::String> sub("command", &messageCb );
+ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel_mux/input/teleop", &teleop );
 
 void setup()
 {
   pinMode(left, OUTPUT);
   pinMode(right, OUTPUT);
+
   nh.initNode();
   nh.subscribe(sub);
   nh.advertise(debug);
@@ -103,5 +126,6 @@ void setup()
 void loop()
 {
   nh.spinOnce();
+  // delay(1);
   delay(1);
 }
