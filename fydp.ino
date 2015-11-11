@@ -45,40 +45,26 @@ void logmove(int dir, bool on) {
     d_str += " | OFF ";
   }
 
-  char d_arr[100];
-  d_str.toCharArray(d_arr,100);
-  debug_msg.data = d_arr;
-  debug.publish( &debug_msg);
+  d(d_str);
 }
 
 // Activate motor depending on direction
 void motor(int dir,int speed) {
-  // debug_msg.data = "IN MOTOR";
-  // debug.publish( &debug_msg);
-  bool on = digitalRead(dir);
+  // bool on = digitalRead(dir); TODO: use analogRead to figure out the motors speed? or just keep track of the value
   // logmove(dir,on);
 
-  if (on) {
-    digitalWrite(dir, LOW);
-  } else {
-    digitalWrite(dir, HIGH);
-  }
-}
-
-void motor_test(int dir,int speed){
-  analogWrite(left,speed);
+  analogWrite(dir, speed);
 }
 
 void move(float x,float r) {
   if (x > 0) {
     int speed = 255;
-    // motor(left,speed);
+    motor(left,speed);
     // motor(right,speed);
-    motor_test(left,speed);
     d("MOVE FORWARD");
   }
   else {
-    motor_test(left,0);
+    motor(left,0);
   }
 
   if (r > 0) {
@@ -88,29 +74,14 @@ void move(float x,float r) {
   }
 }
 
-// Callback function that is executed when a command is published
-void messageCb( const std_msgs::String& toggle_msg){
-  String command = toggle_msg.data;
-
-}
-
+// Subscribe to keyboard teleop commands
 void teleop( const geometry_msgs::Twist& tele_msg) {
   float x = tele_msg.linear.x;
   float r = tele_msg.angular.z; //Rotation
-  String log;
-  char x_string[10];
-  char r_string[10];
-  dtostrf(x,7,3,x_string);
-  dtostrf(r,7,3,r_string);
-  // d("X VELOCITY");
-  // d(x_string);
-  // d("ROTATION");
-  // d(r_string);
 
   move(x,r);
 }
 
-// ros::Subscriber<std_msgs::String> sub("command", &messageCb );
 ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel_mux/input/teleop", &teleop );
 
 void setup()
@@ -126,6 +97,5 @@ void setup()
 void loop()
 {
   nh.spinOnce();
-  // delay(1);
   delay(1);
 }

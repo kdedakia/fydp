@@ -1,17 +1,7 @@
-1) PWM via analogWrite
-2) how fast is the topic response time?
+1) how fast is the topic response time?
     publish time with ROS
     debug output curr time & publish time
-3) Commands
-  Continuous L/R
-  Stop when not active
-  Speed
-4) Rotate
+2)Start motor function to overcome static friction
+3) Rotate
   when given rotate command, go 360 degrees
-6) Impulse movement
-7) Decrease time between publishing
-
-
-Done
-5) Refactor
-  move function
+4) Decrease time between publishing
