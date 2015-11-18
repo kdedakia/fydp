@@ -56,8 +56,8 @@ void motor(int dir,int speed) {
   analogWrite(dir, speed);
 }
 
-void move(float x,float r) {
-  if (x > 0) {
+void move(float ax,float ar) {
+  if (ax > 0) {
     int speed = 255;
     motor(left,speed);
     // motor(right,speed);
@@ -67,19 +67,54 @@ void move(float x,float r) {
     motor(left,0);
   }
 
-  if (r > 0) {
+  if (ar > 0) {
     int speed = 100;
     // motor(right,speed);
     d("TURN LEFT");
   }
 }
 
+float start_time = 0.0;
+
+void startUp(dir) {
+  if (start_time == 0.0) {
+    start_time = millis();
+    motor(dir,100);
+  }
+  else if(millis() - start_time > 500) {
+    motor(dir,150);
+  }
+  else if(millis() - start_time > 1000) {
+    motor(dir,200);
+  }
+
+  t1 = t2;
+  t2 = millis();
+
+}
+
+float t1;
+float t2 = millis();
+float x1;
+float x2;
+float r1;
+float r2;
+float ax;
+float ar;
+
 // Subscribe to keyboard teleop commands
 void teleop( const geometry_msgs::Twist& tele_msg) {
-  float x = tele_msg.linear.x;
-  float r = tele_msg.angular.z; //Rotation
+  t1 = t2;
+  t2 = millis();
+  old_x = x;
+  old_r = r;
+  x = tele_msg.linear.x;
+  r = tele_msg.angular.z; //Rotation
 
-  move(x,r);
+  ax = (x2 - x1) / (t2 - t1);
+  ar = (r2 - r1) / (t2 - t1);
+
+  move(ax,ar);
 }
 
 ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel_mux/input/teleop", &teleop );
