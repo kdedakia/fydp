@@ -11,11 +11,13 @@
 
 
 // INITIALIZE PINS
-const int leftPwm = 6;
-const int leftDir = 7;
+const int leftPwm = 5;
+const int leftDir = 4;
 
-const int rightPwm = 5;
-const int rightDir = 4;
+const int rightPwm = 6;
+const int rightDir = 7;
+
+
 
 
 // INITIALIZE VARIABLES
@@ -36,7 +38,8 @@ void d(String s) {
 
 
 void teleop( const geometry_msgs::Twist& tele_msg) {
-  x = tele_msg.linear.x * 510;
+  float maxPercent = 0.6;
+  x = tele_msg.linear.x * 510 * maxPercent;
   r = tele_msg.angular.z; //Rotation
 
   char temp[20];
@@ -50,34 +53,38 @@ void teleop( const geometry_msgs::Twist& tele_msg) {
 }
 
 void rotate(int r) {
-    int speed = 100;
+    int speed = 30;
     // Go Left
     if (r >= 0) {
-      //analogWrite(leftPwm, speed);
-      //digitalWrite(leftDir, LOW);
+      analogWrite(leftPwm, speed);
+      digitalWrite(leftDir, LOW);
       analogWrite(rightPwm, speed);
-      digitalWrite(rightDir, HIGH);
+      digitalWrite(rightDir, LOW);
     }
     // Go Right
     else {
       analogWrite(leftPwm, speed);
       digitalWrite(leftDir, HIGH);
-      //analogWrite(rightPwm, speed);
-      //digitalWrite(rightDir, LOW);
+      analogWrite(rightPwm, speed);
+      digitalWrite(rightDir, HIGH);
     }
 }
+
+
 
 void move(int speed) {
   if (speed >= 0) {
     analogWrite(leftPwm, speed);
-    digitalWrite(leftDir, LOW);
+    digitalWrite(leftDir, HIGH); //HIGH = Forward
+    
     analogWrite(rightPwm, speed);
     digitalWrite(rightDir, LOW);
   }
   else {
     analogWrite(leftPwm, -speed);
-    digitalWrite(leftDir, HIGH);
-    analogWrite(rightPwm, -speed);
+    digitalWrite(leftDir, LOW); 
+
+    analogWrite(rightPwm, -speed);//HIGH = Backward
     digitalWrite(rightDir, HIGH);
   }
 }
