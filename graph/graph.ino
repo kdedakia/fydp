@@ -1,6 +1,7 @@
 
 int sensorVal = 0;
 int sensorPin = A0;
+int x = 0;
 
 void setup() {
   pinMode(sensorPin, INPUT);
@@ -8,7 +9,13 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   sensorVal = analogRead(sensorPin);  
-  Serial.println(sensorVal);
+  
+  Serial.print(x);
+  Serial.print(" ");
+  Serial.print(sensorVal);
+  Serial.print("\n");
+
+  x += 1;
+  delay(50);
 }
