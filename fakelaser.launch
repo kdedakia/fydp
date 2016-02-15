@@ -1,5 +1,8 @@
 <launch>
-	<include file="$(find openni_launch)/launch/openni.launch"/>
+	<include file="$(find turtlebot_bringup)/launch/3dsensor.launch">
+		<arg name="3d_sensor"   default="kinect"/>
+	</include>
+	<!-- <include file="$(find openni_launch)/launch/openni.launch"/>
 	<node pkg="nodelet" type="nodelet" name="openni_manager" output="screen" respawn="true" args="manager"/>
 	<node pkg="nodelet" type="nodelet" name="pointcloud_throttle" args="load pointcloud_to_laserscan/CloudThrottle openni_manager">
 		<param name="max_rate" value="2"/>
@@ -8,6 +11,6 @@
 	</node>
 	<node pkg="nodelet" type="nodelet" name="kinect_laser" args="load pointcloud_to_laserscan/CloudToScan openni_manager">
 		<param name="output_frame_id" value="/camera_depth_frame"/> <remap from="cloud" to="cloud_throttled"/>
-	</node>
+	</node> -->
 
 </launch>
