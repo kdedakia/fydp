@@ -53,7 +53,7 @@ void teleop( const geometry_msgs::Twist& tele_msg) {
 }
 
 void rotate(int r) {
-    int speed = 30;
+    int speed = 100;
     // Go Left
     if (r >= 0) {
       analogWrite(leftPwm, speed);
