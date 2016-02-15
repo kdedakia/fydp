@@ -1,0 +1,13 @@
+<launch>
+	<include file="$(find openni_launch)/launch/openni.launch"/>
+	<node pkg="nodelet" type="nodelet" name="openni_manager" output="screen" respawn="true" args="manager"/>
+	<node pkg="nodelet" type="nodelet" name="pointcloud_throttle" args="load pointcloud_to_laserscan/CloudThrottle openni_manager">
+		<param name="max_rate" value="2"/>
+		<remap from="cloud_in" to="/camera/depth/points"/>
+		<remap from="cloud_out" to="cloud_throttled"/>
+	</node>
+	<node pkg="nodelet" type="nodelet" name="kinect_laser" args="load pointcloud_to_laserscan/CloudToScan openni_manager">
+		<param name="output_frame_id" value="/camera_depth_frame"/> <remap from="cloud" to="cloud_throttled"/>
+	</node>
+
+</launch>
