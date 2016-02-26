@@ -2,7 +2,7 @@
   <node pkg="tf" type="static_transform_publisher" name="base_to_kinect_broadcaster" args="-0.17 0.04 0.1975 0 0 0 \/base_link \/camera_link 100" />
  
   <!--we use the kinect sensor as a fake laser scanner /-->
-  <include file="$(find my_personal_robotic_companion)/launch/kinect_laser.launch" />
+  <include file="$(find fydp)/launch/kinect_laser.launch" />
 
   <!-- cmd_vel mux for prioritizing cmd_vel topics /-->
   <!--node name="mux" pkg="topic_tools" type="mux" args="cmd_vel_mux teleop_cmd_vel cmd_vel"/-->

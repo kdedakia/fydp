@@ -1,6 +1,6 @@
 <launch>
-    <include file="$(find my_personal_robotic_companion)/launch/patrick_urdf.launch"/>
- 
+    <include file="$(find fydp)/launch/patrick_urdf.launch"/>
+
     <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
         <!--remap from="scan" to="base_scan"/-->
         <param name="base_frame" value="/base_link" />
@@ -40,5 +40,5 @@
 
     <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen" launch-prefix="xterm -e"/>
 
-    <node pkg="rviz" name="rviz" type="rviz" args="-d $(find my_personal_robotic_companion)/launch/rviz/slam.rviz"/>
+    <node pkg="rviz" name="rviz" type="rviz" args="-d $(find fydp)/launch/rviz/slam.rviz"/>
 </launch>
