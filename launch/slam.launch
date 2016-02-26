@@ -1,5 +1,5 @@
 <launch>
-    <include file="$(find fydp)/launch/patrick_urdf.launch"/>
+    <include file="$(find fydp)/launch/urdf.launch"/>
 
     <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
         <!--remap from="scan" to="base_scan"/-->
@@ -38,7 +38,7 @@
         <param name="transform_publish_period" value="0.1"/>
     </node>
 
-    <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen" launch-prefix="xterm -e"/>
+    <!-- <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen" launch-prefix="xterm -e"/> -->
 
-    <node pkg="rviz" name="rviz" type="rviz" args="-d $(find fydp)/launch/rviz/slam.rviz"/>
+    <!-- <node pkg="rviz" name="rviz" type="rviz" args="-d $(find fydp)/launch/rviz/slam.rviz"/> -->
 </launch>
