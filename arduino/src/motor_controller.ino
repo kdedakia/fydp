@@ -18,11 +18,11 @@
 #include <ros/time.h>
 #include "robot_specs.h"
 
-#define leftPwm 11
-#define leftDir 13
-#define rightPwm 6
-#define rightDir 7
-#define encodPinA1      3     // encoder A pin
+#define leftPwm 6
+#define leftDir 7
+#define rightPwm 11
+#define rightDir 13
+#define encodPinA1      3     // encoder A pinn
 #define encodPinB1      8     // encoder B pin
 #define encodPinA2      2
 #define encodPinB2      9
@@ -77,8 +77,8 @@ void handle_cmd( const geometry_msgs::Twist& cmd_msg) {
   // d("Req1: " + String(rpm_req1));
 }
 
-ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel_mux/input/teleop", &handle_cmd);
-// ros::Subscriber<geometry_msgs::Twist> sub("/teleop_velocity_smoother/raw_cmd_vel", &handle_cmd );
+// ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel_mux/input/teleop", &handle_cmd);
+ros::Subscriber<geometry_msgs::Twist> sub("/teleop_velocity_smoother/raw_cmd_vel", &handle_cmd );
 
 geometry_msgs::Vector3Stamped rpm_msg;
 ros::Publisher rpm_pub("rpm", &rpm_msg);
