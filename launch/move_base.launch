@@ -23,7 +23,7 @@
     <rosparam file="$(find fydp)/param/navfn_global_planner_params.yaml" command="load" />
   </node>
 
-  <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen" launch-prefix="xterm -e"/>
+  <!-- <node name="teleop" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen" launch-prefix="xterm -e"/> -->
 
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find fydp)/launch/rviz/amcl.rviz"/>
 </launch>

@@ -1,6 +1,6 @@
 <launch>
-  <!-- <node pkg="tf" type="static_transform_publisher" name="base_to_kinect_broadcaster" args="-0.17 0.04 0.1975 0 0 0 \/base_link \/camera_link 100" /> -->
-  <node pkg="tf" type="static_transform_publisher" name="base_to_kinect_broadcaster" args="0 0 0.35 3.14159 0 0 \/base_link \/camera_link 100" />
+  <node pkg="tf" type="static_transform_publisher" name="base_to_kinect_broadcaster" args="-0.17 0.04 0.35 0 0 0 \/base_link \/camera_link 100" />
+  <!-- <node pkg="tf" type="static_transform_publisher" name="base_to_kinect_broadcaster" args="0 0 0.35 3.14159 0 0 \/base_link \/camera_link 100" /> -->
 
 
   <!--we use the kinect sensor as a fake laser scanner /-->
