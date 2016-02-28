@@ -31,12 +31,23 @@
 /*
   WIRING CONFIGURATION
 
-  Top Shield: LEFT
-    A->Black
-    B->Red
-  Bottom Shield: RIGHT
-    A->Red
-    B->Black
+
+  Top Shield: RIGHT
+	White: 9
+	Yellow: 2
+	Blue: Vcc
+	Green: GND
+	Black: B
+	Red: A
+
+    
+  Bottom Shield: LEFT
+	White: 8
+	Yellow: 3
+	Blue: Vcc
+	Green: GND
+	Black: A
+	Red: B
 
 */
 
