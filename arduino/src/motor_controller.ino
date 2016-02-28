@@ -130,8 +130,15 @@ void loop() {
     PWM_val1 = updatePid(1, PWM_val1, rpm_req1, rpm_act1);
     PWM_val2 = updatePid(2,PWM_val2,rpm_req2, rpm_act2);
 
+    if (rpm_req1 == 0.0 && rpm_act1 == 0.0) {
+      PWM_val1 = 0;
+    }
+    if (rpm_req2 == 0.0 && rpm_act2 == 0.0) {
+      PWM_val2 = 0;
+    }
+
     if(PWM_val1 > 0) {
-        digitalWrite(leftDir,LOW);
+      digitalWrite(leftDir,LOW);
     } else if (PWM_val1 < 0) {
       digitalWrite(leftDir,HIGH);
     }
@@ -167,12 +174,6 @@ void getMotorData(unsigned long time)  {
  rpm_act2 = double((count2-countAnt2)*60*1000)/double(time*encoder_pulse*gear_ratio);
  countAnt1 = count1;
  countAnt2 = count2;
-
- d("Actual RPM1: " + String(rpm_act1));
- d("Actual RPM2: " + String(rpm_act2));
- // Serial.print("Actual RPM: ");
- // Serial.print(rpm_act1);
- // Serial.println("");
 }
 
 int updatePid(int id, int command, double targetValue, double currentValue) {

@@ -9,6 +9,8 @@
   <!-- Run AMCL -->
   <include file="$(find fydp)/launch/amcl_diff.launch" />
 
+  <remap from="cmd_vel" to="teleop_velocity_smoother/raw_cmd_vel" />
+
   <!-- Set cmd_vel mux to listen to cmd_vel instead of teleop -->
   <!--node name="mux_select" pkg="topic_tools" type="mux_select" args="mux cmd_vel"/-->
 
