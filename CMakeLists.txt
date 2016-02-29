@@ -168,3 +168,5 @@ include_directories(
 
 add_executable(base_controller src/base_controller.cpp)
 target_link_libraries(base_controller ${catkin_LIBRARIES})
+add_executable(face_detect_listener src/face_detect.cpp)
+target_link_libraries(face_detect_listener ${catkin_LIBRARIES})
