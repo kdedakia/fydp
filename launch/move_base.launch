@@ -4,12 +4,12 @@
   <!-- Run patrick -->
   <include file="$(find fydp)/launch/urdf.launch" />
   <!-- Run the map server -->
-  <node name="map_server" pkg="map_server" type="map_server" args="$(find fydp)/maps/map.pgm 0.05"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find fydp)/maps/map4.pgm 0.05"/>
 
   <!-- Run AMCL -->
   <include file="$(find fydp)/launch/amcl_diff.launch" />
 
-  <remap from="cmd_vel" to="teleop_velocity_smoother/raw_cmd_vel" />
+  <remap from="cmd_vel" to="cmd_vel_mux/input/teleop" />
 
   <!-- Set cmd_vel mux to listen to cmd_vel instead of teleop -->
   <!--node name="mux_select" pkg="topic_tools" type="mux_select" args="mux cmd_vel"/-->
