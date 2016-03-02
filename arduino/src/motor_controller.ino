@@ -40,7 +40,7 @@
 	Black: B
 	Red: A
 
-    
+
   Bottom Shield: LEFT
 	White: 8
 	Yellow: 3
@@ -88,8 +88,8 @@ void handle_cmd( const geometry_msgs::Twist& cmd_msg) {
   // d("Req1: " + String(rpm_req1));
 }
 
-// ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel_mux/input/teleop", &handle_cmd);
-ros::Subscriber<geometry_msgs::Twist> sub("/teleop_velocity_smoother/raw_cmd_vel", &handle_cmd );
+ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel_mux/input/teleop", &handle_cmd);
+// ros::Subscriber<geometry_msgs::Twist> sub("/teleop_velocity_smoother/raw_cmd_vel", &handle_cmd );
 
 geometry_msgs::Vector3Stamped rpm_msg;
 ros::Publisher rpm_pub("rpm", &rpm_msg);
@@ -147,6 +147,14 @@ void loop() {
     if (rpm_req2 == 0.0 && rpm_act2 == 0.0) {
       PWM_val2 = 0;
     }
+
+    d("RPM REQ1: " + String(rpm_req1));
+    d("RPM ACTUAL1: " + String(rpm_act1));
+    d("PWM 1: " + String(PWM_val1));
+
+    d("RPM REQ2: " + String(rpm_req2));
+    d("RPM ACTUAL2 : " + String(rpm_act2));
+    d("PWM 2: " + String(PWM_val2));
 
     if(PWM_val1 > 0) {
       digitalWrite(leftDir,LOW);
