@@ -10,7 +10,9 @@
   <arg name="fixed_frame" default="camera_rgb_optical_frame" />
   <arg name="paramfile_classifier" default="$(find face_detector)/param/classifier.yaml" />
 
-  <node name="face_detect_listener" type="face_detect_listener" pkg="fydp" output="screen" />
+  <node name="face_detect_listener" type="face_detect_listener" pkg="fydp" output="screen" >
+	<remap from="/face_detect_listener/face_positions" to="/move_base_simple/goal" />
+  </node>
 
   <node name="$(anon dynparam)" pkg="dynamic_reconfigure" type="dynparam" args="set_from_parameters $(arg camera)/driver">
 	<param name="depth_registration" type="bool" value="true" />
