@@ -8,6 +8,7 @@ import tf
 from sensor_msgs.msg import Imu
 from geometry_msgs.msg import Vector3
 from math import sqrt,atan2,cos,sin,pi
+import os
 
 def imu_publisher(sock):
     host= "192.168.42.45" #IP OF PHONE, get using IFCONFIG. Set same IP in HyperIMU
@@ -101,6 +102,8 @@ def imu_publisher(sock):
 
 
 if __name__ == '__main__':
+    os.system("sudo ifconfig usb0 192.168.42.45")
+
     try:
         sock=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
